@@ -40,3 +40,108 @@ Now this dataset is available to us in the `raw` formate in `CSV` and `JSON` res
 ## Architeture 
 
 
+<>
+
+## Download the dataset
+
+Download the dataset from [Kaggle Trending YouTube Video Statistics](https://www.kaggle.com/datasets/datasnaek/youtube-new) dataset (via UI or CLI)
+
+```bash
+## Install kaggle cli 
+
+pip install kaggle
+mkdir ~/.kaggle
+mv ~/Download/kaggle.json ~/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
+
+## Download the dataset 
+
+kaggle datasets download -d datasnaek/youtube-new
+unzip youtube-new.zip -d youtube-new
+```
+
+## Creating an S3 bucket
+
+This is the S3 location where we will store the `RAW` data, 
+
+```bash
+aws s3 mb s3://etl-batch-emr-demo
+```
+And then create two sub-folders namely, `raw_data` and `cleaned_data`
+    - `raw_data` : Here we will store all the all data `JSON` and `CSV` (statistics and statistics reference data)
+    - `cleaned_data` : Here we will store all the processed and clean data, which EMR will write after processing. And that data would be in `parquet` format 
+
+![Img 6](img/6.png)
+
+Now that the bucket is ready, we can copy the raw data files into the bucket (both `JSON` and `CSV`)
+
+```bash
+cd youtube-new
+aws s3 cp CAvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=ca/
+aws s3 cp DEvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=de/
+aws s3 cp FRvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=fr/
+aws s3 cp GBvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=gb/
+aws s3 cp JJPvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=jp/
+aws s3 cp KRvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=kr/
+aws s3 cp MXvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=mx/
+aws s3 cp RUvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=ru/
+aws s3 cp USvideos.csv s3://etl-batch-emr-demo/raw_data/statistics/region=us/
+
+aws s3 cp CA_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp DE_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp FR_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp GB_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp IN_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp JP_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp KR_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp MX_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp RU_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/ 
+aws s3 cp US_category_id.json s3://etl-batch-emr-demo/raw_data/statistics_reference_Data/
+```
+
+
+## Create an EMR Cluster 
+
+1. First we need to create an EC2 key, we are going to use this while login to our EMR cluster 
+
+![Img 3](img/3.png)
+
+2. Now we can create an EMR Cluster, first you need to search for the EMR server in your AWS Console and click on `Create Cluster` 
+
+![Img 4](img/4.png)
+
+3. After that you can give some name to your EMR cluster, select the EMR release (we will go with the latest one, which is always recommended). And then in the Applications section, we will select Spark. 
+
+![Img 5](img/5.png)
+
+We can now wait for the cluser to come in `Waiting` state, and after that we can SSH to the master note of the EMR Cluster 
+
+![Img 7](img/7.png)
+
+## Create the PySpark Script for data processing
+
+## SSH to the EMR cluster and submit the job 
+
+1. Lets SSH to the Master node of the EMR cluster, for that go to the EMR and select the cluster and click on `Connect to the Master Node Using SSH` and copy the command as shown bellow 
+
+![Img 8](img/8.png)
+
+2. Now login to the cluster using the SSH key which you have created earlier 
+
+```bash
+
+chmod 400 mykey-emr.pem
+ssh -i mykey-emr.pem hadoop@ec2-3-23-132-229.us-east-2.compute.amazonaws.com
+
+```
+
+
+
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This project is licensed under the MIT-0 License. See the [LICENSE](./LICENSE) file.
