@@ -13,7 +13,7 @@ tags:
     - aws
     - python 
     - spark
-authorGithubAlias: https://github.com/debnsuma
+authorGithubAlias: debnsuma
 authorName: Suman Debnath
 date: 2022-11-30
 ---
@@ -62,7 +62,7 @@ To implement this data pipeline, we will use EMR cluster with Spark as the distr
     - `RAW` data (which is the input and unprocessed data) and 
     - `CLEANSED` data (which is output and processed data)
 
-![Img Architecture](img/Architecture.png)
+![Img Architecture](images/Architecture.png)
 
 ## Create an EMR Cluster
 
@@ -70,15 +70,15 @@ Before we create an EMR cluster we need to create a `Key Pair`, which we would n
 
 1. Login to your AWS account and navigate to the EC2 console, and click on **Key Pairs** option on the left menu bar. And then, click on `Create Key Pair` 
 
-![Key Pair 1](img/key_pair.png)
+![Key Pair 1](images/key_pair.png)
 
 2. Provide a name (`mykey-emr`) for your key pair and click on `Create Key Pair`. 
 
-![Key Pair 2](img/key_pair_2.png)
+![Key Pair 2](images/key_pair_2.png)
 
 3. Now, we can go ahead and create an `Amazon EMR cluster`. For that navigate to Amazon EMR in the console and click on **Create Cluster** to create an EMR cluster
 
-![emr cluster 1](img/emr_1.png)
+![emr cluster 1](images/emr_1.png)
 
 4. Provide some `Cluster name` to your EMR cluster, and select the following:
     - Select the **latest release** of EMR under **Software configuration** section
@@ -87,11 +87,11 @@ Before we create an EMR cluster we need to create a `Key Pair`, which we would n
 
    Keep everything else as default and click on **Create cluster** 
 
-![emr cluster 2](img/emr_2.png)
+![emr cluster 2](images/emr_2.png)
 
 5. Cluster creation would take some time, and after couple of minutes, you will see that the cluster is **up and running** with a state as `Waiting` (which means the cluster is now ready and waiting to execute any ETL job)
 
-![emr cluster 3](img/emr_3.png)
+![emr cluster 3](images/emr_3.png)
 
 ## Create an Amazon S3 bucket
 
@@ -99,21 +99,21 @@ Now we will create an Amazon S3 bucket and shall create two sub-folders within t
 
 1. Navigate to the Amazon S3 console and click on **Create Bucket** 
 
-![S3_1](img/s3_1.png)
+![S3_1](images/s3_1.png)
 
 2. Create a **bucket** (e.g. `etl-batch-emr-demo`) 
 
-![S3_2](img/s3_2.png)
+![S3_2](images//s3_2.png)
 
 3. Once the bucket is created, create two sub-folders namely 
     - `cleaned_data` 
     - `raw_data`
 
-![S3_3](img/s3_3.png)
+![S3_3](images/s3_3.png)
 
 4. Upload the [sales dataset](/dataset/SalesData.csv) in the bucket under the folder `raw_data`
 
-![Upload raw data](img/upload_csv.png)
+![Upload raw data](images/upload_csv.png)
 
 ## Submit the PySpark job 
 
@@ -121,7 +121,7 @@ Now, that we have the dataset uploaded in S3, its time to submit the PySpark job
 
 1. Navigate to the EMR console, select the `EMR cluster` which you created in earlier and click on **Connect to the Master Node Using SSH** 
 
-![emr_4](img/emr_4.png)
+![emr_4](images//emr_4.png)
 
 2. SSH to the EMR cluster's Master node from your terminal 
 
@@ -170,7 +170,7 @@ sudo spark-submit etl-job.py
 
 5. Once the job **completes**, check the S3 bucket under the folder `cleaned_data`, you will see the new transformed and processed data in `parquet` format 
 
-![s3 cleaned data](img/s3_cleaned_data.png)
+![s3 cleaned data](images/s3_cleaned_data.png)
 
 ## Validating the output using Amazon Athena
 
@@ -184,35 +184,35 @@ To make that integration, we can follow a two-step approach:
 
 1. Navigate to the AWS Glue crawler console and click on **Create Crawler** 
 
-![glue crawler](/img/glue_ui.png)
+![glue crawler](images/glue_ui.png)
 
 2. Give a **name** for the Glue Crawler (`my-crawler-1`)
 
-![glue crawler](/img/glue_crawler_1.png)
+![glue crawler](images/glue_crawler_1.png)
 
 3. Add the **data source** as S3 bucket where you have your cleansed and processed data (`s3://etl-batch-emr-demo/cleaned_data`)
 
-![glue crawler](/img/glue_crawler_2.png)
+![glue crawler](images/glue_crawler_2.png)
 
 4. Attach the **IAM role** (`AWSGlueServiceRole-default`) 
 
-![glue crawler](/img/glue_crawler_3.png)
+![glue crawler](images/glue_crawler_3.png)
 
 5. Create a **database** by clicking on **Add database** and select the same from dropdown menu (`my_demo_db`) 
 
-![glue crawler](/img/glue_crawler_4.png)
+![glue crawler](images/glue_crawler_4.png)
 
 6. Review and verify all the details and click on **Create crawler** 
 
-![glue crawler](/img/glue_crawler_5.png)
+![glue crawler](images/glue_crawler_5.png)
 
 7. Once the crawler is created, select the crawler and click on **Run** 
 
-![glue crawler](/img/glue_run.png)
+![glue crawler](images/glue_run.png)
 
 8. Once the crawler finishes its run, you will see `detected tables`
 
-![glue crawler](/img/glue_run_complete.png)
+![glue crawler](images/glue_run_complete.png)
 
 Now that we have the Glue Data Catalog table created, we can navigate to Amazon Athena to query the data using SQL.
 
@@ -224,7 +224,7 @@ Now that we have the Glue Data Catalog table created, we can navigate to Amazon 
 SELECT * FROM "my_demo_db"."cleaned_data" limit 10;
 ```
 
-![athena](/img/athena_q1.png)
+![athena](images/athena_q1.png)
 
 2. Now, you can perform other SQL queries to analyze the data. For example, if we would like to know the `forcast_monthly_revenue` for each `region per segment wise`, we can run this:
 
@@ -237,7 +237,7 @@ FROM "my_demo_db"."cleaned_data"
 GROUP BY segment, region;
 
 ```
-![athena](/img/athena_q2.png)
+![athena](images/athena_q2.png)
 
 ## Conclusion
 
@@ -249,7 +249,7 @@ Now that you’ve finished this walk-through, you can delete all the following r
 
 - Delete the **EMR Cluster** 
 
-![emr terminate](/img/emr_terminate.png)
+![emr terminate](images/emr_terminate.png)
 
 - Delete the **Amazon S3 bucket**
 
@@ -259,4 +259,4 @@ aws s3 rb s3://<YOUR_BUCKET_LOCATION> --force
 
 - Delete the **Glue Database**
 
-![glue db delete](/img/glue_db_delete.png) 
+![glue db delete](images/glue_db_delete.png) 
