@@ -1,22 +1,11 @@
----
-title: Creating an ETL Pipeline with Amazon EMR and Apache Spark
-description: In this tutorial, you will about how you can build an ETL (Extract, Transform, and Load) pipeline for batch processing using [Amazon EMR (Amazon Elastic MapReduce)](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) and [Spark](https://spark.apache.org/). During this process we will also learn about few of the use case of batch ETL process and how EMR can be leveraged to solve such problems. 
+
+# Creating an ETL Pipeline with Amazon EMR and Apache Spark
+
+In this tutorial, you will about how you can build an ETL (Extract, Transform, and Load) pipeline for batch processing using [Amazon EMR (Amazon Elastic MapReduce)](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) and [Spark](https://spark.apache.org/). During this process we will also learn about few of the use case of batch ETL process and how EMR can be leveraged to solve such problems. 
 
 Batch ETL is a common use case across many organizations and this use case implementation learning will provide you with a starting point, using which you can build more complex data pipelines in AWS using Amazon EMR.
 
-We are going to use [PySpark](https://spark.apache.org/docs/latest/api/python/) to interact with the Spark cluster. PySpark allows you to write Spark applications using Python APIs.
-
-tags:
-    - data engineering
-    - analytics
-    - tutorials
-    - aws
-    - python 
-    - spark
-authorGithubAlias: debnsuma
-authorName: Suman Debnath
-date: 2022-11-30
----
+We are going to use [PySpark](https://spark.apache.org/docs/latest/api/python/) to interact with the Spark cluster. PySpark allows you to write Spark applications using Python APIs. 
 
 ## What you will learn
 
@@ -32,22 +21,6 @@ Before Starting this guide, you will need:
 - An AWS account (if you don't yet have one, please create one and [set up your environment](https://aws.amazon.com/getting-started/guides/setup-environment/))
 - An IAM user that has the access and create AWS resources. 
 - Basic understanding of Python
-
-## Sidebar
-<!-- Update with the appropriate values -->
-| Info                 | Level                                  |
-| -------------------  | -------------------------------------- |
-| ✅ AWS Level         | Beginner                               |
-| ⏱ Time to complete  | 45 mins - 1hr                          |
-| 💰 Cost to complete  | USD 0.30                               |
-
-# Creating an ETL Pipeline with Amazon EMR and Apache Spark
-
-In this tutorial, you will about how you can build an ETL (Extract, Transform, and Load) pipeline for batch processing using [Amazon EMR (Amazon Elastic MapReduce)](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) and [Spark](https://spark.apache.org/). During this process we will also learn about few of the use case of batch ETL process and how EMR can be leveraged to solve such problems. 
-
-Batch ETL is a common use case across many organizations and this use case implementation learning will provide you with a starting point, using which you can build more complex data pipelines in AWS using Amazon EMR.
-
-We are going to use [PySpark](https://spark.apache.org/docs/latest/api/python/) to interact with the Spark cluster. PySpark allows you to write Spark applications using Python APIs. 
 
 ## Use case and problem statement
 
@@ -111,7 +84,7 @@ Now we will create an Amazon S3 bucket and shall create two sub-folders within t
 
 ![S3_3](images/s3_3.png)
 
-4. Upload the [sales dataset](/dataset/SalesData.csv) in the bucket under the folder `raw_data`
+4. Upload the [sales dataset](https://myblog-imgs.s3.amazonaws.com/datasets/SalesData.csv) in the bucket under the folder `raw_data`
 
 ![Upload raw data](images/upload_csv.png)
 
