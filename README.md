@@ -1,4 +1,4 @@
-# Creating an ETL Pipeline with Amazon EMR and Apache Spark (using PySpark)
+# Creating an ETL Pipeline with Amazon EMR and Apache Spark
 
 In this tutorial, you learned about how you can build an ETL (Extract, Transform, and Load) pipeline for batch processing using Amazon EMR and Spark. During this process we will also learn about few of the use case of batch ETL process and how EMR can be leveraged to solve such problems. 
 
@@ -145,5 +145,60 @@ To make that integration, we can follow a two-step approach:
 
 ### Creating an AWS Glue Data Catalog
 
+1. Navigate to the AWS Glue crawler console and click on **Create Crawler** 
+
+![glue crawler](/img/glue_ui.png)
+
+2. Give a new for the Glue Crawler (`my-crawler-1`)
+
+![glue crawler](/img/glue_crawler_1.png)
+
+3. Add the data source as S3 bucket where we have our cleaned and processed data (`s3://etl-batch-emr-demo/cleaned_data`)
+
+![glue crawler](/img/glue_crawler_2.png)
+
+4. Attach the `AWSGlueServiceRole-default` role 
+
+![glue crawler](/img/glue_crawler_3.png)
+
+5. Create a database by clicking on **Add database** and select the same from dropdown menu 
+
+![glue crawler](/img/glue_crawler_4.png)
+
+6. Review and verify all the details and click on **Create crawler** 
+
+![glue crawler](/img/glue_crawler_5.png)
+
+7. Once the crawler is created, select the crawler and click on **Run** 
+
+![glue crawler](/img/glue_run.png)
+
+8. Once the crawler finishes its run, you will see crawler has detected `1 table` 
+
+![glue crawler](/img/glue_run_complete.png)
+
+Now that we have the Glue Data Catalog table created, we can navigate to Amazon Athena to query the data using SQL.
+
 ### Querying output data using Amazon Athena standard SQL 
+
+1. In Athena, you can keep Data Source as the default `AwsDataCatalog` and select `my_demo_db` for Database and run the following query. 
+
+```sql
+SELECT * FROM "my_demo_db"."cleaned_data" limit 10;
+```
+
+![athena](/img/athena_q1.png)
+
+2. Now, we can perform other SQL queries to analyse the data. For example, if we would like to know the `forcast_monthly_revenue` for each region per segmet wise, we can run this:
+
+```sql 
+SELECT 
+    region, 
+    segment, 
+    SUM(forecasted_monthly_revenue) as forcast_monthly_revenue 
+FROM "my_demo_db"."cleaned_data" 
+GROUP BY segment, region;
+
+```
+![athena](/img/athena_q2.png)
 
