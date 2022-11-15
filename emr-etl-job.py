@@ -1,8 +1,8 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
-S3_INPUT_DATA = 's3://etl-batch-emr-demo/raw_data/SalesData.csv'
-S3_OUTPUT_DATA = 's3://etl-batch-emr-demo/cleaned_data/'
+S3_INPUT_DATA = '<YOUR_BUCKET_LOCATION_OF_RAW_DATA>'
+S3_OUTPUT_DATA = '<YOUR_BUCKET_LOCATION_OF_CLEANED_DATA>'
 
 
 def main():
