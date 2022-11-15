@@ -239,7 +239,24 @@ GROUP BY segment, region;
 ```
 ![athena](/img/athena_q2.png)
 
+## Conclusion
+
+Congratulations! You have finished the Creating an ETL Pipeline with Amazon EMR and Apache Spark tutorial. Continue your journey with AWS by following the next steps section below.
+
 ## Clean up 
 
+Now that you’ve finished this walk-through, you can delete all the following resources to avoid incurring unexpected costs 
 
+- Delete the **EMR Cluster** 
 
+![emr terminate](/img/emr_terminate.png)
+
+- Delete the **Amazon S3 bucket**
+
+```bash
+aws s3 rb s3://<YOUR_BUCKET_LOCATION> --force
+```
+
+- Delete the **Glue Database**
+
+![glue db delete](/img/glue_db_delete.png) 
